@@ -27,6 +27,7 @@ jobs:
         run: |
           echo "::set-output name=EMBULK_VERSION::$(cat /tmp/artifacts/embulk.version)"
           echo "::set-output name=EMBULK_MD5::$(cat /tmp/artifacts/embulk.md5)"
+          echo "::set-output name=EMBULK_TAG::$(cat /tmp/tags | grep $(cat /tmp/artifacts/embulk.version))"
         id: embulk-metadata
 
       - name: Login to DockerHub
@@ -37,7 +38,7 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: $(cat /tmp/tags | grep steps.embulk-metadata.outputs.EMBULK_VERSION) == ''
+        if: steps.embulk-metadata.outputs.EMBULK_TAG == ''
         with:
           context: .
           push: true
