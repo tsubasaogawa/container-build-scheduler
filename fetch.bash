@@ -18,6 +18,6 @@ cat << EOL
 EOL
 
 # Print list of embulk versions
-curl -s 'https://registry.hub.docker.com/v2/repositories/${GITHUB_OWNER}/${IMAGE_NAME}/tags/' \
+curl -s "https://registry.hub.docker.com/v2/repositories/${GITHUB_OWNER}/${IMAGE_NAME}/tags/" \
   | jq -r '.results[].name' \
   | tee /tmp/tags

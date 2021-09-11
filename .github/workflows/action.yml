@@ -21,7 +21,7 @@ jobs:
       
       - name: Fetch Embulk Binary
         run: |
-          /bin/bash -x fetch.bash
+          GITHUB_OWNER=${{ github.repository_owner }} /bin/bash -x fetch.bash
 
       - name: Set Embulk Metadata
         run: |
@@ -43,9 +43,9 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.GITHUB_OWNER }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.GITHUB_OWNER }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_VERSION }}
-            ${{ env.GITHUB_OWNER }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_MD5 }}
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_VERSION }}
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_MD5 }}
 
       - name: Save Embulk Metadata
         uses: actions/upload-artifact@v2
