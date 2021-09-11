@@ -10,7 +10,7 @@ mkdir -p /tmp/artifacts
 VERSION=$(curl -i -s "https://dl.embulk.org/embulk-latest.jar" \
   | grep -oP 'location: .+\.jar' \
   | grep -oP '(\d+\.){1,2}(\d+)?' | tee /tmp/artifacts/embulk.version)
-MD5=$(md5sum /tmp/embulk | cut -f1 -d' ' | tee /tmp/artifacts/embulk.md5)
+MD5=$(md5sum ./embulk | cut -f1 -d' ' | tee /tmp/artifacts/embulk.md5)
 
 cat << EOL
   Version: ${VERSION}
