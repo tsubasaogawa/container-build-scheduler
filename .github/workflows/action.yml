@@ -21,10 +21,11 @@ jobs:
       - name: Fetch Embulk Binary
         run: /bin/bash -x fetch.bash
 
-      - name: Get Embulk version
+      - name: Get Embulk Metadata
         run: |
-          echo "::set-output name=EMBULK_VERSION::$(cat /tmp/embulk.version)"
-        id: embulk-version
+          echo "::set-output name=EMBULK_VERSION::$(cat /tmp/artifacts/embulk.version)"
+          echo "::set-output name=EMBULK_MD5::$(cat /tmp/artifacts/embulk.md5)"
+        id: embulk-metadata
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -39,10 +40,11 @@ jobs:
           push: true
           tags: |
             ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
-            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-version.outputs.EMBULK_VERSION }}
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_VERSION }}
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_MD5 }}
 
       - name: Save Embulk Metadata
         uses: actions/upload-artifact@v2
         with:
-          name: embulk-version
-          path: /tmp/embulk.version
+          name: embulk-metadata
+          path: /tmp/artifacts/
