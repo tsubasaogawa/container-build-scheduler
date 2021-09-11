@@ -17,5 +17,7 @@ cat << EOL
   Binary MD5: ${MD5}
 EOL
 
-# Exit if current version of embulk has been already built
-! curl -s 'https://registry.hub.docker.com/v2/repositories/${OWNER}/${IMAGE_NAME}/tags/' | jq -r '.results[].name' | grep $MD5
+# Print list of embulk versions
+curl -s 'https://registry.hub.docker.com/v2/repositories/${GITHUB_OWNER}/${IMAGE_NAME}/tags/' \
+  | jq -r '.results[].name' \
+  | tee /tmp/tags
