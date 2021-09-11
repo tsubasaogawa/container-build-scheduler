@@ -1,16 +1,14 @@
 name: Build Embulk Docker Image
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '15 0 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: embulk
-      GITHUB_OWNER: tsubasaogawa
 
     steps:
       - name: checkout
@@ -46,6 +44,16 @@ jobs:
             ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
             ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_VERSION }}
             ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.embulk-metadata.outputs.EMBULK_MD5 }}
+
+      - name: Publish release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.embulk-metadata.outputs.EMBULK_VERSION }}
+          release_name: v${{ steps.embulk-metadata.outputs.EMBULK_VERSION }}
+          draft: false
+          prerelease: false
 
       - name: Save Embulk Metadata
         uses: actions/upload-artifact@v2
