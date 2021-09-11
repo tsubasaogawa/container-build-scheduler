@@ -18,5 +18,4 @@ cat << EOL
 EOL
 
 # Exit if current version of embulk has been already built
-OWNER=$(echo ${GITHUB_REPOSITORY} | cut -f1 -d'/')
 ! curl -s 'https://registry.hub.docker.com/v2/repositories/${OWNER}/${IMAGE_NAME}/tags/' | jq -r '.results[].name' | grep $MD5
