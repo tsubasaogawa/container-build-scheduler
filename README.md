@@ -1,7 +1,15 @@
 # embulk-docker
 
 This is unofficial embulk docker image. It builds embulk image automatically.
+
 https://hub.docker.com/repository/docker/tsubasaogawa/embulk
+
+# Usage
+
+```
+docker pull tsubasaogawa/embulk
+docker run --rm -it tsubasaogawa/embulk --version
+```
 
 # Development
 
